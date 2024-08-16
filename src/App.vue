@@ -2,12 +2,21 @@
  * @Author: ZRMYDYCG 547471919@qq.com
  * @Date: 2024-08-15 20:07:12
  * @LastEditors: ZRMYDYCG 547471919@qq.com
- * @LastEditTime: 2024-08-15 22:42:13
+ * @LastEditTime: 2024-08-16 08:22:51
  * @Description: App.vue
 -->
 <script setup lang="ts">
 import { onLaunch, onShow, onHide } from "@dcloudio/uni-app";
 onLaunch(() => {
+  const buttonBoundingClientPosition = uni.getStorageSync('buttonBoundingClientPosition')
+  if(!buttonBoundingClientPosition) {
+      // 获取胶囊按钮的位置
+      const res = uni.getMenuButtonBoundingClientRect()
+      // 调试1
+      console.log("胶囊按钮的位置:", res)
+      // 进行本地缓存
+      uni.setStorageSync('buttonBoundingClientPosition', res)
+  }
   console.log("App Launch 🚀");
 });
 onShow(() => {
