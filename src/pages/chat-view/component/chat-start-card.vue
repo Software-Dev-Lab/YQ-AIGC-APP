@@ -2,7 +2,7 @@
  * @Author: ZRMYDYCG 547471919@qq.com
  * @Date: 2024-08-17 10:39:21
  * @LastEditors: ZRMYDYCG 547471919@qq.com
- * @LastEditTime: 2024-08-17 17:58:33
+ * @LastEditTime: 2024-08-17 18:03:05
  * @Description: chat-start-card.vue
 -->
 <template>
@@ -72,6 +72,7 @@ const problemData: IProblemData = [
     description: '我来云南旅游，请给我一些热门景点或者路线作参考'
   },
 ]
+
 // 随机取4项
 const newData =  ref<IProblemData>([])
 const isRotating = ref<boolean>(false)
