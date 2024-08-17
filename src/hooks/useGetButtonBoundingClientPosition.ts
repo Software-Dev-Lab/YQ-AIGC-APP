@@ -2,11 +2,11 @@
  * @Author: ZRMYDYCG 547471919@qq.com
  * @Date: 2024-08-16 08:24:14
  * @LastEditors: ZRMYDYCG 547471919@qq.com
- * @LastEditTime: 2024-08-17 10:29:55
+ * @LastEditTime: 2024-08-17 12:33:34
  * @Description: 获取胶囊按钮的位置
  */
 import { reactive } from "vue"
-import type { IButtonBoundingClientPosition } from "../types/settings"
+import type { IButtonBoundingClientPosition } from "@/types/settings"
 
 // 获取胶囊按钮的位置
 export const useGetButtonBoundingClientPosition = (): IButtonBoundingClientPosition => {

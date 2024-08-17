@@ -2,7 +2,7 @@
  * @Author: ZRMYDYCG 547471919@qq.com
  * @Date: 2024-08-15 20:07:12
  * @LastEditors: ZRMYDYCG 547471919@qq.com
- * @LastEditTime: 2024-08-16 08:22:51
+ * @LastEditTime: 2024-08-17 17:25:55
  * @Description: App.vue
 -->
 <script setup lang="ts">
@@ -28,6 +28,9 @@ onHide(() => {
 </script>
 <style>
 /* 每个页面的公共样式 */
+page {
+  background: #F3F3F3;
+}
 view, text {
   display: block;
   font-size: 33rpx;
@@ -43,5 +46,13 @@ button {
   margin: 0;
   line-height: 0;
   background-color: #fff;
+}
+
+.text-show {
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 </style>
