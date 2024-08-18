@@ -2,7 +2,7 @@
  * @Author: ZRMYDYCG 547471919@qq.com
  * @Date: 2024-08-15 23:37:11
  * @LastEditors: ZRMYDYCG 547471919@qq.com
- * @LastEditTime: 2024-08-18 11:23:23
+ * @LastEditTime: 2024-08-18 12:08:35
  * @Description: chat-view.vue
 -->
 <template>
@@ -17,7 +17,8 @@
   <chat-text-area v-if="false"></chat-text-area>
   <chat-drawing-area v-if="false"></chat-drawing-area>
   <chat-input v-if="false"></chat-input>
-  <personal-view v-if="true"></personal-view>
+  <personal-view v-if="false"></personal-view>
+  <login-view v-if="true"></login-view>
 </template>
 
 <script lang="ts" setup>
@@ -28,6 +29,7 @@ import ChatTextArea from './component/chat-text-area.vue'
 import chatDrawingArea from './component/chat-drawing-area.vue'
 import chatInput from './component/chat-input.vue'
 import personalView from '../personal-view/personal-view.vue'
+import LoginView from '../login-view/login-view.vue'
 import { useGetButtonBoundingClientPosition } from '../../hooks/useGetButtonBoundingClientPosition'
 
 const { button_bottom, button_top, button_height } = useGetButtonBoundingClientPosition()
