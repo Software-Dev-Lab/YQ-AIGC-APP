@@ -2,7 +2,7 @@
  * @Author: ZRMYDYCG 547471919@qq.com
  * @Date: 2024-08-15 23:37:11
  * @LastEditors: ZRMYDYCG 547471919@qq.com
- * @LastEditTime: 2024-08-18 01:48:24
+ * @LastEditTime: 2024-08-18 11:23:23
  * @Description: chat-view.vue
 -->
 <template>
@@ -14,9 +14,10 @@
   </view>
   <view class="menu-view-height"></view>
   <chat-start-card v-if="false"></chat-start-card>
-  <chat-text-area v-if="true"></chat-text-area>
+  <chat-text-area v-if="false"></chat-text-area>
   <chat-drawing-area v-if="false"></chat-drawing-area>
-  <chat-input></chat-input>
+  <chat-input v-if="false"></chat-input>
+  <personal-view v-if="true"></personal-view>
 </template>
 
 <script lang="ts" setup>
@@ -26,10 +27,10 @@ import ChatStartCard from './component/chat-start-card.vue'
 import ChatTextArea from './component/chat-text-area.vue'
 import chatDrawingArea from './component/chat-drawing-area.vue'
 import chatInput from './component/chat-input.vue'
+import personalView from '../personal-view/personal-view.vue'
 import { useGetButtonBoundingClientPosition } from '../../hooks/useGetButtonBoundingClientPosition'
 
 const { button_bottom, button_top, button_height } = useGetButtonBoundingClientPosition()
-
 </script>
 
 <style scoped lang="scss">
