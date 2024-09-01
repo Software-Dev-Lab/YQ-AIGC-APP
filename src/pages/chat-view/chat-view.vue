@@ -1,8 +1,8 @@
 <!--
  * @Author: ZRMYDYCG 547471919@qq.com
  * @Date: 2024-08-15 23:37:11
- * @LastEditors: ZRMYDYCG 547471919@qq.com
- * @LastEditTime: 2024-08-18 12:08:35
+ * @LastEditors: ZRMYDYCG
+ * @LastEditTime: 2024-09
  * @Description: chat-view.vue
 -->
 <template>
@@ -16,9 +16,9 @@
   <chat-start-card v-if="false"></chat-start-card>
   <chat-text-area v-if="false"></chat-text-area>
   <chat-drawing-area v-if="false"></chat-drawing-area>
-  <chat-input v-if="false"></chat-input>
+  <chat-input v-if="true"></chat-input>
   <personal-view v-if="false"></personal-view>
-  <login-view v-if="true"></login-view>
+  <login-view v-if="false"></login-view>
 </template>
 
 <script lang="ts" setup>

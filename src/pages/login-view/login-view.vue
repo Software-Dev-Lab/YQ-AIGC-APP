@@ -1,3 +1,10 @@
+<!--
+ * @Author: ZRMYDYCG
+ * @Date: 2024-08-18
+ * @LastEditors: ZRMYDYCG
+ * @LastEditTime: 2024-09
+ * @Description: 登录页面
+-->
 <template>
 	<view class="login-page">
 		<image class="login-image" src="/static/login.png" mode="widthFix"></image>
@@ -8,7 +15,7 @@
 			</button>
 			<form class="form-submit">
 				<input type="nickname" class="weui-input" name="input" placeholder="请输入昵称"/>
-				<button form-type="submit" class="submit-button">登录</button>
+				<button form-type="submit" class="submit-button" @click="login">登录</button>
 			</form>
 		</view>
 	</view>
@@ -16,6 +23,13 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue"
 
+const login = () => {
+	uni.login({
+		success:(res)=>{
+			console.log(res)
+		},
+	})
+}
 </script>
 <style lang="scss" scoped>
 	.login-page{

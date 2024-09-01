@@ -1,23 +1,23 @@
 <!--
  * @Author: ZRMYDYCG 547471919@qq.com
  * @Date: 2024-08-18 01:46:15
- * @LastEditors: ZRMYDYCG 547471919@qq.com
- * @LastEditTime: 2024-08-18 11:14:20
+ * @LastEditors: ZRMYDYCG
+ * @LastEditTime: 2024-09
  * @Description: chat-input.vue
 -->
 <template>
   <view class="input-box-area">
     <image @click="inputType = inputType === 'text' ? 'voice' : 'text'" :src="inputType === 'text' ? '../../../static/jianpan.png' : '../../../static/yuyin.png'" mode="widthFix"></image>
     <view class="input-content" v-show="inputType === 'text'">
-      <textarea class="textarea-box" placeholder="你有什么想知道的, 快来问问我吧" :auto-height="textareaValue.autoHeight" @linechange="lineChange" maxlength="500" :show-confirm-bar="false" cursor-spacing="20" fixed></textarea>
+      <textarea v-model="inputContent" class="textarea-box" placeholder="你有什么想知道的, 快来问问我吧" :auto-height="textareaValue.autoHeight" @linechange="lineChange" maxlength="500" :show-confirm-bar="false" cursor-spacing="20" fixed></textarea>
     </view>
     <view v-show="inputType === 'voice'" class="speech-sound">按住说话</view>
-    <image src="../../../static/fasong.png" mode="widthFix"></image>
+    <image src="../../../static/fasong.png" mode="widthFix" @click="sendIng"></image>
   </view>
   <!-- 录制语音弹窗 -->
-  <view class="mask-view"></view>
-  <view class="record-text">语音转换的文字</view>
-  <view class="recording-pop-up">
+  <view class="mask-view" v-if="showAudio"></view>
+  <view class="record-text" v-if="showAudio">语音转换的文字</view>
+  <view class="recording-pop-up" v-if="showAudio">
     <text class="release">松开 发送</text>
     <text class="in-recognition">正在识别声音...</text>
     <view class="audio-wave">
@@ -38,7 +38,7 @@ const textareaValue = reactive({
   height: '0px'
 })
 // 输入框换行时触发
-const lineChange = (event:any) => {
+const lineChange = (event: any) => {
   const { detail : { height, lineCount } } = event
 
   // 如果 >= 2 行
@@ -61,7 +61,7 @@ const textareaParentHeight = ref<string>('')
 onMounted(() => {
   const query = uni.createSelectorQuery().in(instance)
   setTimeout(() => {
-    query.select('.input-content').boundingClientRect((res) => {
+    query.select('.input-content').boundingClientRect((res: any) => {
     textareaParentHeight.value = res.height + 'px'
   }).exec()
   }, 300);
@@ -71,6 +71,17 @@ onMounted(() => {
 const barData = ref([
   '1s', '0.9s', '0.8s', '0.7s', '0.6s', '0.5s', '0.4s', '0.3s', '0.2s', '0.1s','1s', '0.9s', '0.8s', '0.7s', '0.6s', '0.5s', '0.4s', '0.3s', '0.2s', '0.1s'
 ])
+
+// 显示隐藏语音录制区域
+const showAudio = ref(false)
+
+// 输入框的值
+const inputContent = ref('')
+
+// 发送
+const sendIng = () => {
+  console.log('发送', inputContent.value)
+}
 </script>
 <style lang="scss" scoped>
 .input-box-area {
