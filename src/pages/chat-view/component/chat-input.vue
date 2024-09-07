@@ -27,6 +27,7 @@
 </template>
 <script setup lang="ts">
 import { ref, reactive, getCurrentInstance, onMounted } from "vue"
+import { useChatbotMessageStore } from '@/store'
 
 // 切换键盘输入还是语音合成
 const inputType = ref("text")
@@ -80,7 +81,7 @@ const inputContent = ref('')
 
 // 发送
 const sendIng = () => {
-  console.log('发送', inputContent.value)
+  useChatbotMessageStore().startSending(inputContent.value)
 }
 </script>
 <style lang="scss" scoped>
