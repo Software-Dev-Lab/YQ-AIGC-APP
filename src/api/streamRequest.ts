@@ -1,10 +1,10 @@
 export const StreamRequest = (data: any) => {
     return new Promise((resolve, reject) => {
         const response = uni.request({
-            url: 'http://192.168.80.45:3000/create-completions', // 请求地址
-            method: "POST", // 你的请求方法
+            url: 'http://192.168.220.45:3000/create-completions', // 请求地址
+            method: "POST",
             data: data,
-            enableChunked: true, // 开启流传输
+            enableChunked: true, // 开启分片模式
             success: (res) => {
                 resolve(res)
             },

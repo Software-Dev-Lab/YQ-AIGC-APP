@@ -2,7 +2,7 @@
  * @Author: ZRMYDYCG
  * @Date: 2024-09
  * @LastEditors: ZRMYDYCG
- * @LastEditTime: 2024-09-07 13:42:21
+ * @LastEditTime: 2024-09-07 21:53:16
  * @Description: 状态仓库（建立一个仓库即可）
  */
 
@@ -30,7 +30,9 @@ export const useChatbotMessageStore = defineStore('chatbotMessageStore', {
         /**
          * @desc 处理服务器端大模型返回的数据
         */
-       async handleText() {},
+       async handleText(objVal) {
+           
+        },
        /**
         * @desc 发送数据到服务器端
         * @param content 发送的内容
@@ -60,13 +62,36 @@ export const useChatbotMessageStore = defineStore('chatbotMessageStore', {
                 console.log(e);
             })
             
-            // 成功回调 返回流传输信息 返回arrayBuffer
-            requestTask.onChunkReceived((e: any)=> {
-                console.log(e)
+            // 成功回调 返回流传输信息 返回 arrayBuffer
+            requestTask.onChunkReceived((response: any)=> {
+                // 解析返回数据
+                let arrayBuffer = response.data
+                let string = ''
+                const arrayBuffers = new Uint8Array(arrayBuffer)
+                for (let i = 0; i < arrayBuffers.length; i++) {
+                    // unicode字符
+                     string += String.fromCharCode(arrayBuffers[i])
+                }
+
+                // 编码与解码
+                let buffer = ''
+                buffer += decodeURIComponent(encodeURIComponent(string))
+                
+                // 循环检查 buffer 里面是否包含换行符
+                while(buffer.includes('\n')) {
+                    const index = buffer.indexOf('\n')
+                    const chunk = buffer.slice(0, index)
+                    buffer = buffer.slice(index + 1)
+                    // 判断以data:开头并且不含有data: [DONE]
+                    if(chunk.startsWith('data: ') && !chunk.includes('[DONE]')){
+                        const jsonData = JSON.parse(chunk.replace('data: ',''))
+                        this.handleText(jsonData)
+                    }
+                }
             })
-            } catch (err) {
-                console.log(err);
-            }
+        } catch (err) {
+            console.log(err);
+        }
         },
     }
 })
