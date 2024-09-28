@@ -2,7 +2,7 @@
  * @Author: ZRMYDYCG
  * @Date: 2024-09
  * @LastEditors: ZRMYDYCG
- * @LastEditTime: 2024-09-07 21:53:16
+ * @LastEditTime: 2024-09-08 06:33:09
  * @Description: 状态仓库（建立一个仓库即可）
  */
 
@@ -14,7 +14,7 @@ import { StreamRequest } from '@/api/streamRequest'
 interface IMessages {
     role: string // 角色
     content: string  // 内容
-    finish_reason?: 'start' | 'stop' | 'tool_calls' | 'length' | 'sensitive' | 'network_error' // 模型推理终止的原因
+    finish_reason?: 'start' | 'stop' | 'tool_calls' | 'length' | 'sensitive' | 'network_error' | 'respond' // 模型推理终止的原因
     web_search?: any[] // 网络搜索结果
 }
 
@@ -24,14 +24,38 @@ interface IMessages {
 export const useChatbotMessageStore = defineStore('chatbotMessageStore', {
     state: () => ({
         // {"role": "user", "content": "你好"},
-        messages: [] as IMessages[]
+        messages: [] as IMessages[],  // 存储聊天记录
+        receiveText: '' as string, // 接收到大模型返回的文本
     }),
     actions: {
         /**
          * @desc 处理服务器端大模型返回的数据
         */
-       async handleText(objVal) {
-           
+       async handleText(objVal: any) {
+           // 服务器开始响应
+            this.messages[this.messages.length - 1].finish_reason = 'respond'
+            // 将大模型返回的文本追加到 receiveText 中
+            this.receiveText += objVal.choices[0].delta.content
+            // 把文本追加到大模型的回复中
+            this.messages[this.messages.length - 1].content= this.receiveText || ''
+            // 判断是否回复完毕
+            if(objVal.choices[0].delta.finish_reason) {
+                // 存储状态
+                this.messages[this.messages.length - 1].finish_reason = objVal.choices[0].delta.finish_reason
+                // 存储网络搜索结果
+                this.messages[this.messages.length - 1].web_search = objVal.web_search ? objVal.web_search : []
+                // 如果回复异常
+                const condition = [
+                    {type:'length',content:'到达token上限,请重新开启新会话'},
+                    {type:'sensitive',content:'非常抱歉，我目前无法提供你需要的具体信息'},
+                    {type:'network_error',content:'推理异常，我或许出现了一些问题，你可以重新尝试'},
+                ]
+                condition.forEach(item=>{
+                    if(objVal.choices[0].finish_reason === item){
+                        this.messages[this.messages.length - 1].content = item.content
+                    }
+                })
+            }
         },
        /**
         * @desc 发送数据到服务器端
