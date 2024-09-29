@@ -59,6 +59,7 @@
     "@dcloudio/uni-mp-xhs": "3.0.0-4020420240722002",
     "@dcloudio/uni-quickapp-webview": "3.0.0-4020420240722002",
     "animate.css": "^4.1.1",
+    "fast-text-encoding": "^1.0.6",
     "pinia": "^2.2.2",
     "vue": "^3.4.21",
     "vue-i18n": "^9.1.9"
@@ -73,6 +74,10 @@
     "@uni-helper/uni-app-types": "^1.0.0-alpha.3",
     "@vue/runtime-core": "^3.4.21",
     "@vue/tsconfig": "^0.4.0",
+    "eslint": "^9.11.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "prettier": "^3.3.3",
     "sass": "^1.77.8",
     "typescript": "^5.1.6",
     "vite": "4.4.9",
