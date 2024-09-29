@@ -26,8 +26,13 @@
   </view>
 </template>
 <script setup lang="ts">
-import { ref, reactive, getCurrentInstance, onMounted } from "vue"
+import { ref, reactive, getCurrentInstance, onMounted, toRefs } from "vue"
 import { useChatbotMessageStore } from '@/store'
+
+
+const chatbotMessageStore = useChatbotMessageStore()
+
+const { inProgress } = toRefs(chatbotMessageStore)
 
 // 切换键盘输入还是语音合成
 const inputType = ref("text")
@@ -81,6 +86,17 @@ const inputContent = ref('')
 
 // 发送
 const sendIng = () => {
+  if(!inputContent.value.trim() || inputContent.value === '') {
+    return
+  }
+  console.log(inputContent.value, inProgress.value);
+  if(inProgress.value) {
+    uni.showToast({
+      title: '正在发送消息',
+      icon: 'none',
+    })
+    return
+  }
   useChatbotMessageStore().startSending(inputContent.value)
 }
 </script>

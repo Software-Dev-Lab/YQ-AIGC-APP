@@ -2,7 +2,7 @@
  * @Author: ZRMYDYCG
  * @Date: 2024-09
  * @LastEditors: ZRMYDYCG
- * @LastEditTime: 2024-09-29 00:35:27
+ * @LastEditTime: 2024-09-29 22:53:21
  * @Description: 状态仓库（建立一个仓库即可）
  */
 import { defineStore } from 'pinia'
@@ -24,6 +24,7 @@ export const useChatbotMessageStore = defineStore('chatbotMessageStore', {
     state: () => ({
         messages: [] as IMessages[],  // 存储聊天记录
         receiveText: '' as string, // 接收到大模型返回的文本
+        inProgress: false, // 是否正在推理中
     }),
     actions: {
         /**
@@ -37,9 +38,9 @@ export const useChatbotMessageStore = defineStore('chatbotMessageStore', {
             // 把文本追加到大模型的回复中
             this.messages[this.messages.length - 1].content = this.receiveText || ''
             // 判断是否回复完毕
-            if (objVal.choices[0].delta.finish_reason) {
+            if (objVal.choices[0].finish_reason) {
                 // 存储状态
-                this.messages[this.messages.length - 1].finish_reason = objVal.choices[0].delta.finish_reason
+                this.messages[this.messages.length - 1].finish_reason = objVal.choices[0].finish_reason
                 // 存储网络搜索结果
                 this.messages[this.messages.length - 1].web_search = objVal.web_search ? objVal.web_search : []
                 // 如果回复异常
@@ -53,6 +54,8 @@ export const useChatbotMessageStore = defineStore('chatbotMessageStore', {
                         this.messages[this.messages.length - 1].content = item.content
                     }
                 })
+                // 状态流转
+                this.inProgress = false
             }
         },
         /**
@@ -60,6 +63,9 @@ export const useChatbotMessageStore = defineStore('chatbotMessageStore', {
          * @param content 发送的内容
          * */
         async startSending(content: string) {
+            // 清空上一次的返回结果
+            this.receiveText = ''
+            // 存储发送的内容
             this.messages.push({
                 role: 'user',
                 content: content,
@@ -70,6 +76,8 @@ export const useChatbotMessageStore = defineStore('chatbotMessageStore', {
                 finish_reason: 'start',
                 web_search: []
             })
+            // 处于对话中
+            this.inProgress = true
             try {
                 const requestTask: any = await StreamRequest({ messages: this.messages })
 
@@ -85,8 +93,6 @@ export const useChatbotMessageStore = defineStore('chatbotMessageStore', {
                     let buffer = ''
                     buffer += decodeURIComponent(escape(string))
                     
-                    console.log(buffer)
-   
                     // 循环检查 buffer 里面是否包含换行符
                     while (buffer.includes('\n')) {
                         const index = buffer.indexOf('\n');
@@ -100,7 +106,6 @@ export const useChatbotMessageStore = defineStore('chatbotMessageStore', {
                             // 尝试解析 JSON，捕获解析错误
                             try {
                                 const jsonData = JSON.parse(jsonString);
-                                console.log('接收到服务器端数据:', jsonData);
                                 this.handleText(jsonData);
                             } catch (jsonError) {
                                 console.error('JSON 解析错误:', jsonError, '原始数据:', jsonString);
@@ -109,9 +114,12 @@ export const useChatbotMessageStore = defineStore('chatbotMessageStore', {
                     }
                 })
             } catch (err) {
+                this.messages[this.messages.length - 1].finish_reason = 'stop'
+                this.messages[this.messages.length - 1].content = '回复异常，我或许出现了一些问题，你可以重新尝试'
+                // 状态流转
+                this.inProgress = false
                 console.log(err);
             }
-        }
-
+        },
     }
 })
