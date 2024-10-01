@@ -2,7 +2,7 @@
  * @Author: ZRMYDYCG
  * @Date: 2024-09
  * @LastEditors: ZRMYDYCG
- * @LastEditTime: 2024-09-29 22:53:21
+ * @LastEditTime: 2024-10-01 19:37:09
  * @Description: 状态仓库（建立一个仓库即可）
  */
 import { defineStore } from 'pinia'
@@ -56,6 +56,8 @@ export const useChatbotMessageStore = defineStore('chatbotMessageStore', {
                 })
                 // 状态流转
                 this.inProgress = false
+                
+                console.log('回复完毕:', this.messages);
             }
         },
         /**
@@ -65,7 +67,7 @@ export const useChatbotMessageStore = defineStore('chatbotMessageStore', {
         async startSending(content: string) {
             // 清空上一次的返回结果
             this.receiveText = ''
-            // 存储发送的内容
+            // 将每一轮对话记录到 messages 中
             this.messages.push({
                 role: 'user',
                 content: content,

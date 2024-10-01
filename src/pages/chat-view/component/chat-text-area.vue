@@ -6,27 +6,38 @@
  * @Description: chat-text-area.vue
 -->
 <template>
-  <view class="chat-text-area">
-    <view class="user-message">用户发送的文字</view>
-    <view class="ai-message">
-      <text>这里接受 ai 回复的内容</text>
-      <chat-loading></chat-loading>
-      <!-- 联网查询的数据 -->
-      <view>
-        <text class="recommend-tips">我还为你推荐以下内容</text>
-        <view class="recommend-content">
-          <text class="recommend-item text-show">123456</text>
-          <text class="recommend-item text-show">123456</text>
-          <text class="recommend-item text-show">123456</text>
+  <block v-for="(item, index) in chatbotMessageStore.messages" :key="index">
+    <view class="chat-text-area">
+      <view class="user-message" v-if="item.role === 'user'">{{ item.content }}</view>
+      <view class="ai-message" v-if="item.role === 'assistant'">
+        <towxml :nodes="appContext.$towxml(item.content, 'markdown')"></towxml>
+        <chat-loading v-if="item.finish_reason === 'start'"></chat-loading>
+        <!-- 联网查询的数据 -->
+        <view v-if="item.web_search.length > 0">
+          <text class="recommend-tips">我还为你推荐以下内容</text>
+          <view class="recommend-content">
+            <text class="recommend-item text-show"
+              v-for="(itemInner, indexInner) in item.web_search"
+              :key="indexInner"
+            >
+              {{indexInner + 1}}.{{ itemInner.title }}——{{ itemInner.media }}
+            </text>
+          </view>
         </view>
       </view>
     </view>
-  </view>
+  </block>
 </template>
 <script setup lang="ts">
-import { ref, reactive } from "vue"
+import { ref, reactive, getCurrentInstance } from "vue"
 import ChatLoading from "./chat-loading.vue"
+import { useChatbotMessageStore } from '@/store'
 
+const chatbotMessageStore = useChatbotMessageStore()
+const instance = getCurrentInstance()
+
+const appContext = ref(null)
+appContext.value = instance.appContext.config.globalProperties
 </script>
 <style lang="scss" scoped>
 .user-message {

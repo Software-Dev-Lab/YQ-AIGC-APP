@@ -6,3 +6,8 @@ declare module '*.vue' {
   const component: DefineComponent<{}, {}, any>
   export default component
 }
+
+
+declare module "./wxcomponents/towxml/index.js" {
+  export function useTowxml(...args: any[]): any
+}

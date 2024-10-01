@@ -58,6 +58,7 @@
     "@dcloudio/uni-mp-weixin": "3.0.0-4020420240722002",
     "@dcloudio/uni-mp-xhs": "3.0.0-4020420240722002",
     "@dcloudio/uni-quickapp-webview": "3.0.0-4020420240722002",
+    "@types/node": "^22.7.4",
     "animate.css": "^4.1.1",
     "fast-text-encoding": "^1.0.6",
     "pinia": "^2.2.2",

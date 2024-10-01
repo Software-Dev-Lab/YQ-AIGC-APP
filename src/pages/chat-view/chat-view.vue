@@ -14,11 +14,12 @@
   </view>
   <view class="menu-view-height"></view>
   <chat-start-card v-if="false"></chat-start-card>
-  <chat-text-area v-if="false"></chat-text-area>
+  <chat-text-area v-if="true"></chat-text-area>
   <chat-drawing-area v-if="false"></chat-drawing-area>
   <chat-input v-if="true"></chat-input>
   <personal-view v-if="false"></personal-view>
   <login-view v-if="false"></login-view>
+  <view style="height: 300rpx;"></view>
 </template>
 
 <script lang="ts" setup>
