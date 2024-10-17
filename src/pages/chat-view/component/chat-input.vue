@@ -97,7 +97,9 @@ const sendIng = () => {
     })
     return
   }
-  useChatbotMessageStore().startSending(inputContent.value)
+  useChatbotMessageStore().startSending(inputContent.value.trim())
+  // 清空输入框
+  inputContent.value = ''
 }
 </script>
 <style lang="scss" scoped>
