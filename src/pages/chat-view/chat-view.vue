@@ -21,7 +21,7 @@
   </view>
   <view class="menu-view-height"></view>
   <chat-start-card v-show="navTopIndex === 1 && chatbotMessageStore.messages.length === 0"></chat-start-card>
-  <chat-text-area v-show="navTopIndex === 1 && chatbotMessageStore.messages.length > 0"></chat-text-area>
+  <chat-text-area class="chat-text-area" v-show="navTopIndex === 1 && chatbotMessageStore.messages.length > 0"></chat-text-area>
   <chat-drawing-area v-show="navTopIndex === 2"></chat-drawing-area>
   <chat-input v-show="navTopIndex === 1"></chat-input>
   <personal-view v-show="navTopIndex === 0"></personal-view>
@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, watch, getCurrentInstance } from 'vue'
 import { menuList } from '../../settings'
 import ChatStartCard from './component/chat-start-card.vue'
 import ChatTextArea from './component/chat-text-area.vue'
@@ -44,10 +44,27 @@ import { useChatbotMessageStore } from '../../store/index'
 const { button_bottom, button_top, button_height } = useGetButtonBoundingClientPosition()
 const navTopIndex = ref(1)
 const chatbotMessageStore = useChatbotMessageStore()
+const instance = getCurrentInstance()
 
 const changeNav = (val: number) => {
   navTopIndex.value = val
 }
+
+// 监听组件高度, 始终滚动底部
+watch(chatbotMessageStore.messages, () => {
+  setTimeout(() => {
+    const query = uni.createSelectorQuery().in(instance)
+    query.select('.chat-text-area').boundingClientRect()
+    query.exec(rect => {
+      console.log(rect)
+      uni.pageScrollTo({
+        scrollTop: rect[0].height + 200,
+      })
+    })
+  }, 500)
+}, {
+  deep: true,
+})
 </script>
 
 <style scoped lang="scss">

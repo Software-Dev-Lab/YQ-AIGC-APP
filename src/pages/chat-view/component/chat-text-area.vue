@@ -13,7 +13,7 @@
         <towxml :nodes="appContext.$towxml(item.content, 'markdown')"></towxml>
         <chat-loading v-if="item.finish_reason === 'start'"></chat-loading>
         <!-- 联网查询的数据 -->
-        <view v-if="item.web_search.length > 0">
+        <view v-if="item.web_search!.length > 0">
           <text class="recommend-tips">我还为你推荐以下内容</text>
           <view class="recommend-content">
             <text class="recommend-item text-show"
