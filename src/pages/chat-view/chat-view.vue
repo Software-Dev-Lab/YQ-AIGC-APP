@@ -2,22 +2,29 @@
  * @Author: ZRMYDYCG 547471919@qq.com
  * @Date: 2024-08-15 23:37:11
  * @LastEditors: ZRMYDYCG
- * @LastEditTime: 2024-09
+ * @LastEditTime: 2024-10
  * @Description: chat-view.vue
 -->
 <template>
   <view class="chat-view">
     <view class="button-top"></view>
     <view class="menu-style">
-        <text v-for="item in menuList" :key="item.id">{{ item.name }}</text>
+        <text 
+          v-for="item in menuList" 
+          :key="item.id" 
+          :class="{'select-item': navTopIndex === item.id}" 
+          @click="changeNav(item.id)"
+        >
+          {{ item.name }}
+        </text>
     </view>
   </view>
   <view class="menu-view-height"></view>
-  <chat-start-card v-if="false"></chat-start-card>
-  <chat-text-area v-if="true"></chat-text-area>
-  <chat-drawing-area v-if="false"></chat-drawing-area>
-  <chat-input v-if="true"></chat-input>
-  <personal-view v-if="false"></personal-view>
+  <chat-start-card v-show="navTopIndex === 1 && chatbotMessageStore.messages.length === 0"></chat-start-card>
+  <chat-text-area v-show="navTopIndex === 1 && chatbotMessageStore.messages.length > 0"></chat-text-area>
+  <chat-drawing-area v-show="navTopIndex === 2"></chat-drawing-area>
+  <chat-input v-show="navTopIndex === 1"></chat-input>
+  <personal-view v-show="navTopIndex === 0"></personal-view>
   <login-view v-if="false"></login-view>
   <view style="height: 300rpx;"></view>
 </template>
@@ -32,8 +39,15 @@ import chatInput from './component/chat-input.vue'
 import personalView from '../personal-view/personal-view.vue'
 import LoginView from '../login-view/login-view.vue'
 import { useGetButtonBoundingClientPosition } from '../../hooks/useGetButtonBoundingClientPosition'
+import { useChatbotMessageStore } from '../../store/index'
 
 const { button_bottom, button_top, button_height } = useGetButtonBoundingClientPosition()
+const navTopIndex = ref(1)
+const chatbotMessageStore = useChatbotMessageStore()
+
+const changeNav = (val: number) => {
+  navTopIndex.value = val
+}
 </script>
 
 <style scoped lang="scss">
@@ -53,6 +67,10 @@ const { button_bottom, button_top, button_height } = useGetButtonBoundingClientP
     align-items: center;
     height: v-bind(button_height);
     padding-left: 20rpx;
+
+    .select-item {
+      color: #333!important;
+    }
 
     text {
       color: #9D9486;

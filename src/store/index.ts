@@ -2,12 +2,11 @@
  * @Author: ZRMYDYCG
  * @Date: 2024-09
  * @LastEditors: ZRMYDYCG
- * @LastEditTime: 2024-10-01 19:37:09
+ * @LastEditTime: 2024-10
  * @Description: 状态仓库（建立一个仓库即可）
  */
 import { defineStore } from 'pinia'
 import { StreamRequest } from '@/api/streamRequest'
-// import { createCompletions } from '@/api/modules/zhipu'
 import 'fast-text-encoding'
 
 interface IMessages {

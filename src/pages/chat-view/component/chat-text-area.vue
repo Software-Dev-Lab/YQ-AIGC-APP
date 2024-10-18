@@ -1,8 +1,8 @@
 <!--
  * @Author: ZRMYDYCG 547471919@qq.com
  * @Date: 2024-08-17 18:03:47
- * @LastEditors: ZRMYDYCG 547471919@qq.com
- * @LastEditTime: 2024-08-17 19:23:05
+ * @LastEditors: ZRMYDYCG
+ * @LastEditTime: 2024-10
  * @Description: chat-text-area.vue
 -->
 <template>
@@ -38,6 +38,7 @@ const instance = getCurrentInstance()
 
 const appContext = ref(null)
 appContext.value = instance.appContext.config.globalProperties
+
 </script>
 <style lang="scss" scoped>
 .user-message {

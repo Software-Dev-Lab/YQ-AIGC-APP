@@ -29,8 +29,7 @@
 </template>
 <script setup lang="ts">
 import { ref, reactive } from "vue"
-import type { IGenerateStylesData } from '../../../types/pages/chat-view.vue'
-import { generateStylesData } from '../../../settings/index.ts'
+import { generateStylesData } from '../../../settings/index'
 
 const selectIndex = ref(0)
 </script>
